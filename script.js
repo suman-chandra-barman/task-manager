@@ -1,6 +1,8 @@
 let todoData = [];
-let stringTodoData = localStorage.getItem("todoData");
+let listIndex = null;
+let taskIndex = null;
 
+let stringTodoData = localStorage.getItem("todoData");
 if(stringTodoData){
     todoData = JSON.parse(stringTodoData);
 }
@@ -64,32 +66,54 @@ function handleTaskInput() {
     });
 }
 
-function handleTaskEditBtn() {
+
+function handleTaskDetailsBtn() {
     todoData.forEach((list,lIdx) => {
-        list.tasks.forEach((task, idx) => {
-            const taskEditBtn = document.getElementById(`task_details_btn_${lIdx}_${idx}`);
+        list.tasks.forEach((task, tIdx) => {
+            const taskDetailsBtn = document.getElementById(`task_details_btn_${lIdx}_${tIdx}`);
             const taskModal = document.getElementById('task_modal');
             const closeBtn = document.getElementById("modal_close_btn");
             const taskTitle = document.getElementById('modal_task_title');
             const taskDescription = document.getElementById('modal_task_description');
-        
 
-            taskEditBtn.addEventListener('click', function(){
+            taskDetailsBtn.addEventListener('click', function(){
                 taskTitle.value = task.title;
                 taskDescription.value = task.description;
 
                 taskModal.style.display = "block";
+                listIndex=lIdx;
+                taskIndex=tIdx;
             });
+
             closeBtn.addEventListener('click', function(){
                 taskModal.style.display = "none";
                 taskTitle.value = "";
                 taskDescription.value = "";
+                listIndex= null;
+                taskIndex= null;
+
+                renderTodo();
+            });
+
+            taskTitle.addEventListener('input', function(event){
+                if(event.target.value && listIndex !== null && taskIndex !== null){
+                    todoData[listIndex].tasks[taskIndex].title = event.target.value;
+                
+                    let stringTodoData = JSON.stringify(todoData);
+                    localStorage.setItem("todoData", stringTodoData);
+                }
+            });
+            taskDescription.addEventListener('input', function(event){
+                if(event.target.value && listIndex !== null && taskIndex !== null){
+                    todoData[listIndex].tasks[taskIndex].description = event.target.value;
+                
+                    let stringTodoData = JSON.stringify(todoData);
+                    localStorage.setItem("todoData", stringTodoData);
+                }
             });
         })
     });
 }
-
-
 
 function renderTodo() {
     const todoSection = document.getElementById('todo_section');
@@ -114,7 +138,6 @@ function renderTodo() {
             listDiv +=  `<button id="add_task_btn_${list}" class='add-task-btn'>+ Add New Task</button>`
         listDiv +=  `</div>`
     }
-
         listDiv +=`
             <div>
                 <button id="add_list_btn">+ Add New List</button>
@@ -128,7 +151,8 @@ function renderTodo() {
     handleAddTaskBtnClick();
     handleListInput();
     handleTaskInput();
-    handleTaskEditBtn();
+    handleTaskDetailsBtn();
+
 
     taskDragAndDrop();
     listDragAndDrop();
@@ -167,7 +191,6 @@ function taskDragAndDrop(){
 
                 const task = todoData[sourceListIndex].tasks.splice(sourceTaskIndex,1)[0];
                 todoData[targetListIndex].tasks.splice(targetTaskIndex, 0, task);
-                console.log(todoData);
 
                 renderTodo();
             }
