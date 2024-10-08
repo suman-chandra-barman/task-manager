@@ -66,8 +66,7 @@ function handleTaskInput() {
     });
 }
 
-
-function handleTaskDetailsBtn() {
+function handleTaskModal() {
     todoData.forEach((list,lIdx) => {
         list.tasks.forEach((task, tIdx) => {
             const taskDetailsBtn = document.getElementById(`task_details_btn_${lIdx}_${tIdx}`);
@@ -103,6 +102,7 @@ function handleTaskDetailsBtn() {
                     localStorage.setItem("todoData", stringTodoData);
                 }
             });
+
             taskDescription.addEventListener('input', function(event){
                 if(event.target.value && listIndex !== null && taskIndex !== null){
                     todoData[listIndex].tasks[taskIndex].description = event.target.value;
@@ -120,8 +120,8 @@ function renderTodo() {
     let listDiv = '';
 
     for(let list = 0; list < todoData.length; list++){
-        listDiv += `<div id="list_title_${list}" data-list-index="${list}" class='list-title-field' draggable="true">`
-            listDiv +=  `<input id='list_title_input_${list}' class='list-input-field' data-list-index="${list}" type="text" value="${todoData[list].title}" placeholder="Enter list name"> `
+        listDiv += `<div id="list_title_${list}" data-list-index="${list}" class='list-title' draggable="true">`
+            listDiv +=  `<input id='list_title_input_${list}' class='list-input' data-list-index="${list}" type="text" value="${todoData[list].title}" placeholder="Enter list name"> `
 
             if(!todoData[list].tasks){
                 console.log("Tasks not found.Index:" + list);
@@ -129,8 +129,8 @@ function renderTodo() {
             for(let task = 0; task < todoData[list].tasks.length; task++){
                 listDiv += `
                 <div class='task-card' data-list-index="${list}" data-task-index="${task}" draggable="true">
-                    <input id="task_input_${list}_${task}" type="text" class="task-input-field" value="${todoData[list].tasks[task].title}" data-list-index="${list}" data-task-index="${task}" placeholder="Enter task name">
-                    <button id="task_details_btn_${list}_${task}" class="task-edit-btn">Details</button>
+                    <input id="task_input_${list}_${task}" type="text" class="task-input" value="${todoData[list].tasks[task].title}" data-list-index="${list}" data-task-index="${task}" placeholder="Enter task name">
+                    <button id="task_details_btn_${list}_${task}" class="task-details-btn">Details</button>
                 </div>
                     `
             }
@@ -151,7 +151,7 @@ function renderTodo() {
     handleAddTaskBtnClick();
     handleListInput();
     handleTaskInput();
-    handleTaskDetailsBtn();
+    handleTaskModal();
 
 
     taskDragAndDrop();
@@ -201,7 +201,7 @@ function taskDragAndDrop(){
 }
 
 function listDragAndDrop(){
-    const listContainers = document.querySelectorAll('.list-title-field');
+    const listContainers = document.querySelectorAll('.list-title');
     let draggedElement = null;
 
     listContainers.forEach(container => {

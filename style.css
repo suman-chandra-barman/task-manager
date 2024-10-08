@@ -1,7 +1,12 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
+}
+
+body{
+background-color: rgb(213, 213, 213);
 }
 
 #main_box{
@@ -12,19 +17,21 @@
     display: flex;
     align-items: flex-start;
     margin: 10px 0;
+    flex-wrap: wrap;
 }
 
-.list-title-field{
+.list-title{
     display: flex;
     flex-direction: column;
     background-color: black;
     color: white;
     padding: 10px;
     border-radius: 10px;
+    margin-top: 10px;
     margin-right: 10px;
 }
 
-.list-input-field{
+.list-input{
     background-color: black;
     color: white;
     border: none;
@@ -32,11 +39,11 @@
     border-radius: 10px;
 }
 
-.list-input-field:focus{
+.list-input:focus, .task-input:focus{
     outline: none;
 }
 
-.task-input-field{
+.task-input{
     background-color: transparent;
     padding: 10px;
     color: white;
@@ -49,6 +56,7 @@
     background-color: black;
     color: white;
     border-radius: 5px;
+    margin-top: 10px;
 }
 
 .add-task-btn{
@@ -96,22 +104,26 @@
     background-color: rgb(66, 63, 63);
     color: white;
     margin: auto;
-    padding: 20px 30px;
+    padding: 30px 30px 60px;
     border: 1px solid #888;
     border-radius: 10px;
-    min-width: 500px;
-    max-width: 600px;
+    width: 80%;
+    min-width: 400px;
   }
   
   .task-modal-content input, .task-modal-content textarea{
     color: white;
-    background-color: rgb(0, 0, 0);
-    min-width: 400px;
-    max-width: 500px;
+    background-color: transparent;
     padding: 10px;
+    border: 1px solid rgb(118, 118, 118);
+    border-radius: 5px;
     margin-top: 10px;
+    width: 100%;
   }
 
+  .task-modal-content input:focus, .task-modal-content textarea:focus{
+    outline: none;
+  }
 
   .close {
     color: #aaaaaa;
@@ -126,7 +138,7 @@
     text-decoration: none;
     cursor: pointer;
   }
-  .task-edit-btn, .task-save-btn{
+  .task-details-btn, .task-save-btn{
     background-color: transparent;
     color: white;
     padding: 8px 8px;
